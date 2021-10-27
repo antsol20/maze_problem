@@ -35,7 +35,7 @@ int main()
 void createMaze() {
 
 	Maze maze(4, 4);
-	in
+	int visited = 0;
 
 	std::stack<Cell> visit_stack;
 	visit_stack.push(Cell(0, 0));
