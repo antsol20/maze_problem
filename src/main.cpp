@@ -3,43 +3,45 @@
 #include <stack>
 
 #define PRINT_OUT(x) (std::cout << x << std::endl)
+#define GEN_RAND (rand() % 2)
+
 
 int main()
 {
-	PRINT_OUT("hello");
+	PRINT_OUT("Welcome");
 
-	int rows = 5;
-	int cols = 6;
-
-	Maze maze(rows, cols);
-	maze.cells;
-
-	Cell cell1;
-	cell1.x = 1;
-	cell1.y = 2;
-	cell1.walls = { true, true, true, true };
-
-	Cell cell2;
-	cell2.x = 3;
-	cell2.y = 0;
-	cell1.walls = { true, false, true, true };
-
-	std::vector<Cell> cell_vec = { cell1, cell2 };
-
-	maze.cells.push_back(cell_vec);
-
-	PRINT_OUT(maze.cells[0][0].x);
-	PRINT_OUT(maze.cells[0][0].y);
+	for (size_t i = 0; i < 1000; i++)
+	{
+		PRINT_OUT(GEN_RAND);
+	}
+	
 }
+
+
 
 void createMaze() {
 
-	Maze maze(4, 4);
+	int rows = 4;
+	int cols = 4;
+
+	Maze maze(rows, cols);
 	int visited = 0;
 
 	std::stack<Cell> visit_stack;
 	visit_stack.push(Cell(0, 0));
 
+	maze.cells[0][0].visited = true;
+	visited = 1;
 
+	while(visited < maze.num_of_rows * maze.num_of_cols)
+
+	for (int i = 0; i < maze.num_of_rows; i++)
+	{
+		for (int i = 0; i < maze.num_of_cols; i++) 
+		{
+
+
+		}
+	}
 
 }
