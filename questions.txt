@@ -1,0 +1,5 @@
+Questions
+-----------
+
+- inline class?
+- naming convention, what is m_  

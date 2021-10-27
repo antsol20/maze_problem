@@ -1,9 +1,12 @@
 #include <iostream>
 #include "maze.h"
+#include <stack>
+
+#define PRINT_OUT(x) (std::cout << x << std::endl)
 
 int main()
 {
-	std::cout << "hello";
+	PRINT_OUT("hello");
 
 	int rows = 5;
 	int cols = 6;
@@ -12,20 +15,30 @@ int main()
 	maze.cells;
 
 	Cell cell1;
-	cell1.walls[0] = true;
-	cell1.walls[1] = true;
-	cell1.walls[2] = true;
-	cell1.walls[3] = true;
+	cell1.x = 1;
+	cell1.y = 2;
+	cell1.walls = { true, true, true, true };
 
 	Cell cell2;
-	cell2.walls[0] = false;
-	cell2.walls[1] = false;
-	cell2.walls[2] = false;
-	cell2.walls[3] = false;
+	cell2.x = 3;
+	cell2.y = 0;
+	cell1.walls = { true, false, true, true };
 
-	//maze.cells.push_back(cell1, cell2);
+	std::vector<Cell> cell_vec = { cell1, cell2 };
 
+	maze.cells.push_back(cell_vec);
 
+	PRINT_OUT(maze.cells[0][0].x);
+	PRINT_OUT(maze.cells[0][0].y);
+}
+
+void createMaze() {
+
+	Maze maze(4, 4);
+	in
+
+	std::stack<Cell> visit_stack;
+	visit_stack.push(Cell(0, 0));
 
 
 
