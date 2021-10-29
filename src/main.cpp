@@ -1,60 +1,20 @@
 #include <iostream>
 #include "maze.h"
 #include <stack>
+#include <vector>
+#include <string>
 
 #define PRINT_OUT(x) (std::cout << x << std::endl)
-#define GEN_RAND (rand() % 2)
-
-
-void initialize_maze(Maze& maze) {
-
-	for (int i = 0; i < maze.num_of_rows; i++) {
-		std::vector<Cell> row_vec;
-
-		for (int j = 0; j < maze.num_of_cols; j++) {
-			row_vec.push_back(Cell(i, j));
-		}
-
-		maze.cells.push_back(row_vec);
-	}
-
-	return;
-}
-
-void set_outside_walls(Maze& maze) {
-
-	for (int i = 0; i < maze.num_of_rows; i++) {
-		for (int j = 0; j < maze.num_of_cols; j++) {
-
-			if (i == 0) {
-				maze.cells[i][j].walls[0] = true;
-			}
-
-			if (i == maze.num_of_rows - 1) {
-				maze.cells[i][j].walls[2] = true;
-			}
-
-			if (j == 0) {
-				maze.cells[i][j].walls[1] = true;
-			}
-
-			if (j == maze.num_of_cols - 1) {
-				maze.cells[i][j].walls[2] = true;
-			}
-		}
-	}
-
-	return;
-}
 
 void print_maze(Maze& maze) {
 
 	for (int i = 0; i < maze.num_of_rows; i++) {
 
 		for (int j = 0; j < maze.num_of_cols; j++) {
-			
-			if (maze.cells[i][j].walls[0] == false && maze.cells[i][j].walls[1] == false && maze.cells[i][j].walls[2] == false && maze.cells[i][j].walls[2] == false) {
-				std::cout << ".";
+
+			if (!maze.cells[i][j].walls[0] && !maze.cells[i][j].walls[1] && !maze.cells[i][j].walls[2] && !maze.cells[i][j].walls[3]) {
+
+				std::cout << "-";
 			}
 			else {
 				std::cout << "+";
@@ -69,11 +29,75 @@ int main()
 {
 	PRINT_OUT("Welcome");
 
-	Maze my_maze(6, 5);
-	initialize_maze(my_maze);
-	set_outside_walls(my_maze);
+	int rows = 6;
+	int cols = 10;
+
+	Maze my_maze(rows, cols);
+	my_maze.initialize();
 	print_maze(my_maze);
 
-	PRINT_OUT("finished");
+
+	std::stack<Cell*> my_stack;
+	my_stack.push(&my_maze.cells[0][0]);
+	int visited = 1;
+
+
+	while (visited < rows * cols) {
+
+		std::vector<int> neighbours;
+
+		auto top = my_stack.top();
+		top->visited = true;
+
+		PRINT_OUT("visting (" << top->x  << ","  << top->y << ")");
+	
+		// check northern neighbour
+		if (top->y > 0 && my_maze.cells[top->x][top->y - 1].visited == false) {
+			neighbours.push_back(0);
+		}
+
+		// check eastern neighbour
+		if (top->x < my_maze.num_of_cols - 1 && my_maze.cells[top->x + 1][top->y].visited == false) {
+			neighbours.push_back(1);
+		}
+
+		// check southern neighbour
+		if (top->y < my_maze.num_of_rows - 1 && my_maze.cells[top->x][top->y + 1].visited == false) {
+			neighbours.push_back(2);
+		}
+
+		// check western neighbour
+		if (top->x > 0 && my_maze.cells[top->x - 1][top->y].visited == false) {
+			neighbours.push_back(3);
+		}
+
+		if (!neighbours.empty()) {
+
+			int next_cell_dir = neighbours[rand() % neighbours.size()];
+
+			switch (next_cell_dir) {
+			case 0:
+				my_stack.push(&my_maze.cells[top->x][top->y - 1]);
+				break;
+			case 1:
+				my_stack.push(&my_maze.cells[top->x + 1][top->y]);
+				break;
+
+			case 2:
+				my_stack.push(&my_maze.cells[top->x][top->y + 1]);
+				break;
+
+			case 3:
+				my_stack.push(&my_maze.cells[top->x - 1][top->y]);
+				break;
+			}
+
+			visited++;
+		}
+
+		else {
+			my_stack.pop();
+		}
+	}
 
 }

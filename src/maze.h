@@ -16,5 +16,49 @@ public:
 		num_of_cols = cols;
 	}
 
+	void initialize() {
+
+		for (int i = 0; i < this->num_of_rows; i++) {
+			std::vector<Cell> row_vec;
+
+			for (int j = 0; j < this->num_of_cols; j++) {
+				row_vec.push_back(Cell(i, j));
+			}
+
+			this->cells.push_back(row_vec);
+		}
+
+		this->set_outside_walls();
+
+		return;
+	}
+
+private:
+	void set_outside_walls() {
+
+		for (int i = 0; i < this->num_of_rows; i++) {
+			for (int j = 0; j < this->num_of_cols; j++) {
+
+				if (i == 0) {
+					this->cells[i][j].walls[0] = true;
+				}
+
+				if (i == this->num_of_rows - 1) {
+					this->cells[i][j].walls[2] = true;
+				}
+
+				if (j == 0) {
+					this->cells[i][j].walls[1] = true;
+				}
+
+				if (j == this->num_of_cols - 1) {
+					this->cells[i][j].walls[2] = true;
+				}
+			}
+		}
+
+		return;
+	}
+
 };
 
