@@ -6,42 +6,74 @@
 #define GEN_RAND (rand() % 2)
 
 
+void initialize_maze(Maze& maze) {
+
+	for (int i = 0; i < maze.num_of_rows; i++) {
+		std::vector<Cell> row_vec;
+
+		for (int j = 0; j < maze.num_of_cols; j++) {
+			row_vec.push_back(Cell(i, j));
+		}
+
+		maze.cells.push_back(row_vec);
+	}
+
+	return;
+}
+
+void set_outside_walls(Maze& maze) {
+
+	for (int i = 0; i < maze.num_of_rows; i++) {
+		for (int j = 0; j < maze.num_of_cols; j++) {
+
+			if (i == 0) {
+				maze.cells[i][j].walls[0] = true;
+			}
+
+			if (i == maze.num_of_rows - 1) {
+				maze.cells[i][j].walls[2] = true;
+			}
+
+			if (j == 0) {
+				maze.cells[i][j].walls[1] = true;
+			}
+
+			if (j == maze.num_of_cols - 1) {
+				maze.cells[i][j].walls[2] = true;
+			}
+		}
+	}
+
+	return;
+}
+
+void print_maze(Maze& maze) {
+
+	for (int i = 0; i < maze.num_of_rows; i++) {
+
+		for (int j = 0; j < maze.num_of_cols; j++) {
+			
+			if (maze.cells[i][j].walls[0] == false && maze.cells[i][j].walls[1] == false && maze.cells[i][j].walls[2] == false && maze.cells[i][j].walls[2] == false) {
+				std::cout << ".";
+			}
+			else {
+				std::cout << "+";
+			}
+		}
+		std::cout << std::endl;
+	}
+}
+
+
 int main()
 {
 	PRINT_OUT("Welcome");
 
-	for (size_t i = 0; i < 1000; i++)
-	{
-		PRINT_OUT(GEN_RAND);
-	}
-	
-}
+	Maze my_maze(6, 5);
+	initialize_maze(my_maze);
+	set_outside_walls(my_maze);
+	print_maze(my_maze);
 
-
-
-void createMaze() {
-
-	int rows = 4;
-	int cols = 4;
-
-	Maze maze(rows, cols);
-	int visited = 0;
-
-	std::stack<Cell> visit_stack;
-	visit_stack.push(Cell(0, 0));
-
-	maze.cells[0][0].visited = true;
-	visited = 1;
-
-	while(visited < maze.num_of_rows * maze.num_of_cols)
-
-	for (int i = 0; i < maze.num_of_rows; i++)
-	{
-		for (int i = 0; i < maze.num_of_cols; i++) 
-		{
-
-
-		}
-	}
+	PRINT_OUT("finished");
 
 }

@@ -4,7 +4,7 @@
 class Cell
 {
 public:
-	std::vector<bool> walls;  // index 0 is top and move clockwise
+	bool walls[4] = { false, false, false, false };  // index 0 is top and move clockwise
 	int x;
 	int y;
 	bool visited = false;

@@ -4,6 +4,7 @@
 
 class Maze
 {
+
 public:
 	int num_of_rows;
 	int num_of_cols;
@@ -14,7 +15,6 @@ public:
 		num_of_rows = rows;
 		num_of_cols = cols;
 	}
-
 
 };
 
