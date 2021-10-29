@@ -6,22 +6,23 @@ class Maze
 {
 
 public:
-	int num_of_rows;
-	int num_of_cols;
+
+	int width;
+	int height;
 	std::vector<std::vector<Cell>> cells;
 
 	Maze(int rows, int cols)
 	{
-		num_of_rows = rows;
-		num_of_cols = cols;
+		width = cols;
+		height = rows;
 	}
 
 	void initialize() {
 
-		for (int i = 0; i < this->num_of_rows; i++) {
+		for (int i = 0; i < this->width; i++) {
 			std::vector<Cell> row_vec;
 
-			for (int j = 0; j < this->num_of_cols; j++) {
+			for (int j = 0; j < this->height; j++) {
 				row_vec.push_back(Cell(i, j));
 			}
 
@@ -36,22 +37,23 @@ public:
 private:
 	void set_outside_walls() {
 
-		for (int i = 0; i < this->num_of_rows; i++) {
-			for (int j = 0; j < this->num_of_cols; j++) {
+		for (int i = 0; i < this->width; i++) {
+
+			for (int j = 0; j < this->height; j++) {
 
 				if (i == 0) {
 					this->cells[i][j].walls[0] = true;
 				}
 
-				if (i == this->num_of_rows - 1) {
-					this->cells[i][j].walls[2] = true;
-				}
-
-				if (j == 0) {
+				if (i == this->width - 1) {
 					this->cells[i][j].walls[1] = true;
 				}
 
-				if (j == this->num_of_cols - 1) {
+				if (j == 0) {
+					this->cells[i][j].walls[3] = true;
+				}
+
+				if (j == this->height - 1) {
 					this->cells[i][j].walls[2] = true;
 				}
 			}
