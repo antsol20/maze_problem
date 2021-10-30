@@ -1,10 +1,9 @@
 #pragma once
-#include <vector>
 
 class Cell
 {
 public:
-	bool walls[4] = { false, false, false, false };  // index 0 is top and move clockwise
+	bool walls[4] = { true, true, true, true };  // index 0 is top and move clockwise
 	int x;
 	int y;
 	bool visited = false;
@@ -14,7 +13,5 @@ public:
 		x = x_coord;
 		y = y_coord;
 	}
-	
-	Cell() = default;
 };
 

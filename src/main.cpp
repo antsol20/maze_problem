@@ -1,4 +1,4 @@
-#include <iostream>
+﻿#include <iostream>
 #include "maze.h"
 #include <stack>
 #include <vector>
@@ -24,6 +24,31 @@ void print_maze(Maze& maze) {
 	}
 }
 
+void print2_maze(Maze& maze) {
+
+	for (int i = 0; i < maze.width; i++) {
+
+		for (int j = 0; j < maze.height; j++) {
+
+			auto cell = maze.cells[i][j];
+			std::string msg;
+
+			if (cell.walls[0] && cell.walls[1] && cell.walls[2] && cell.walls[3]) {
+
+				msg = "□";
+			}
+			else {
+				msg = "n";
+			}
+
+			std::cout << msg;
+
+		}
+
+		std::cout << std::endl;
+	}
+}
+
 
 int main()
 {
@@ -33,7 +58,6 @@ int main()
 	int cols = 5;
 
 	Maze my_maze(rows, cols);
-	my_maze.initialize();
 	print_maze(my_maze);
 
 
@@ -49,9 +73,9 @@ int main()
 		auto current = my_stack.top();
 		current->visited = true;
 
-		PRINT_OUT("visting (" << current->x  << ","  << current->y << ")");
+		PRINT_OUT("visting (" << current->x << "," << current->y << ")");
 		auto test = "test";
-	
+
 		// check northern neighbour
 		if (current->y > 0 && my_maze.cells[current->x][current->y - 1].visited == false) {
 			neighbours.push_back(0);
@@ -77,19 +101,38 @@ int main()
 			int next_cell_dir = neighbours[rand() % neighbours.size()];
 
 			switch (next_cell_dir) {
-			case 0:
+
+			case 0:   // northern neighbour
 				my_stack.push(&my_maze.cells[current->x][current->y - 1]);
+
+				my_maze.cells[current->x][current->y].walls[0] = false;
+				my_maze.cells[current->x][current->y - 1].walls[2] = false;
+
 				break;
-			case 1:
+
+			case 1:  // eastern neighbour
 				my_stack.push(&my_maze.cells[current->x + 1][current->y]);
+
+				my_maze.cells[current->x][current->y].walls[1] = false;
+				my_maze.cells[current->x + 1][current->y].walls[3] = false;
+
+
 				break;
 
-			case 2:
+			case 2:  // southern neighbour
 				my_stack.push(&my_maze.cells[current->x][current->y + 1]);
+
+				my_maze.cells[current->x][current->y].walls[2] = false;
+				my_maze.cells[current->x][current->y + 1].walls[0] = false;
+
 				break;
 
-			case 3:
+			case 3:  // western neighbour
 				my_stack.push(&my_maze.cells[current->x - 1][current->y]);
+
+				my_maze.cells[current->x][current->y].walls[3] = false;
+				my_maze.cells[current->x - 1][current->y].walls[1] = false;
+
 				break;
 			}
 
@@ -101,4 +144,5 @@ int main()
 		}
 	}
 
+	print2_maze(my_maze);
 }
