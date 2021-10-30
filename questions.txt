@@ -4,3 +4,4 @@ Questions
 - inline class?
 - naming convention, what is m_  
 - enum & bit set 0x01, 0x02, 0x04 etc.. flags 
+- class entirely in header file?? 'class redeclaration error'
