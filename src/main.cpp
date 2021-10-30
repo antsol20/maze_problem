@@ -12,5 +12,4 @@ int main()
 
 	my_maze.draw_maze();
 	
-
 }
