@@ -3,7 +3,6 @@
 #include <stack>
 #include <vector>
 #include <string>
-#include "maze.h"
 #include "cell.h"
 
 class Maze
