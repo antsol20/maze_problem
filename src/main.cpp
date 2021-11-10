@@ -5,11 +5,14 @@
 
 int main()
 {
-	int rows = 4;
-	int cols = 4;
+	int rows = 5;
+	int cols = 8;
 
 	Maze my_maze(rows, cols);
 
 	my_maze.draw_maze();
+	my_maze.print_maze();
+
+
 	
 }

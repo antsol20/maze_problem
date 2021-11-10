@@ -85,6 +85,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\maze.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\cell.h" />
