@@ -9,7 +9,19 @@
 Maze::Maze(int rows, int cols) {
 	width = cols;
 	height = rows;
-	this->initialise();
+	initialise();
+}
+
+void Maze::initialise() {
+	for (int x = 0; x < width; x++) {
+		std::vector<Cell> col_vec;
+
+		for (int y = 0; y < width; y++) {
+			col_vec.push_back(Cell(x, y));
+		}
+		cells.push_back(col_vec);
+	}
+	return;
 }
 
 void Maze::draw_maze() {
@@ -28,26 +40,25 @@ void Maze::draw_maze() {
 
 		std::cout << "visting (" << current->x << "," << current->y << ")" << std::endl;
 
-		// check western neighbour
+		// check northern neighbour
 		if (current->y > 0 && cells[current->x][current->y - 1].visited == false) {
 			neighbours.push_back(0);
 		}
 
-		// check southern neighbour
-		if (current->x < height - 1 && cells[current->x + 1][current->y].visited == false) {
+		// check eastern neighbour
+		if (current->x < width - 1 && cells[current->x + 1][current->y].visited == false) {
 			neighbours.push_back(1);
 		}
 
-		// check eastern neighbour
-		if (current->y < width - 1 && cells[current->x][current->y + 1].visited == false) {
+		// check southern neighbour
+		if (current->y < height - 1 && cells[current->x][current->y + 1].visited == false) {
 			neighbours.push_back(2);
 		}
 
-		// check northern neighbour
+		// check western neighbour
 		if (current->x > 0 && cells[current->x - 1][current->y].visited == false) {
 			neighbours.push_back(3);
 		}
-
 
 		if (!neighbours.empty()) {
 
@@ -55,35 +66,36 @@ void Maze::draw_maze() {
 
 			switch (next_cell_dir) {
 
-			case 0:   // western neighbour
+			case 0:   // northern neighbour
 				my_stack.push(&cells[current->x][current->y - 1]);
 
-				cells[current->x][current->y].walls[3] = false;
-				cells[current->x][current->y - 1].walls[1] = false;
+				cells[current->x][current->y].walls[0] = false;
+				cells[current->x][current->y - 1].walls[2] = false;
 
 				break;
 
-			case 1:  // southern neighbour
+			case 1:  // eastern neighbour
 				my_stack.push(&cells[current->x + 1][current->y]);
 
-				cells[current->x][current->y].walls[2] = false;
-				cells[current->x + 1][current->y].walls[0] = false;
+				cells[current->x][current->y].walls[1] = false;
+				cells[current->x + 1][current->y].walls[3] = false;
+
 
 				break;
 
-			case 2:  // eastern neighbour
+			case 2:  // southern neighbour
 				my_stack.push(&cells[current->x][current->y + 1]);
 
-				cells[current->x][current->y].walls[1] = false;
-				cells[current->x][current->y + 1].walls[3] = false;
+				cells[current->x][current->y].walls[2] = false;
+				cells[current->x][current->y + 1].walls[0] = false;
 
 				break;
 
-			case 3:  // northern neighbour
+			case 3:  // western neighbour
 				my_stack.push(&cells[current->x - 1][current->y]);
 
-				cells[current->x][current->y].walls[0] = false;
-				cells[current->x - 1][current->y].walls[2] = false;
+				cells[current->x][current->y].walls[3] = false;
+				cells[current->x - 1][current->y].walls[1] = false;
 
 				break;
 			}
@@ -96,18 +108,16 @@ void Maze::draw_maze() {
 		}
 	}
 
-
 }
 
-
 void Maze::print_maze() {
-	for (int i = 0; i < height; i++) {
+	for (int y = 0; y < height; y++) {
 
-		for (int j = 0; j < width; j++) {
+		for (int x = 0; x < width; x++) {
 
 			std::cout << "+";
 
-			if (cells[i][j].walls[0])
+			if (cells[x][y].walls[0])
 				std::cout << "---";
 
 			else
@@ -119,9 +129,9 @@ void Maze::print_maze() {
 
 		std::cout << std::endl;
 
-		for (int j = 0; j < width; j++) {
+		for (int x = 0; x < width; x++) {
 
-			if (cells[i][j].walls[3])
+			if (cells[x][y].walls[3])
 				std::cout << "|   ";
 
 			else
@@ -136,25 +146,65 @@ void Maze::print_maze() {
 
 	}
 
-	for (int j = 0; j < width; j++) {
+	for (int x = 0; x < width; x++) {
 
 		std::cout << "+---";
 	}
 
-	std::cout << "+";
+	std::cout << "+" << std::endl;
 
 }
 
-
-void Maze::initialise() {
-	for (int i = 0; i < height; i++) {
-		std::vector<Cell> row_vec;
-
-		for (int j = 0; j < width; j++) {
-			row_vec.push_back(Cell(i, j));
+void Maze::reset_visited() {
+	for (int x = 0; x < width; x++) {
+		for (int y = 0; y < width; y++) {
+			cells[x][y].visited = false;
 		}
-		cells.push_back(row_vec);
 	}
-	return;
+
 }
+bool Maze::path_find(int start_x, int start_y, int end_x, int end_y) {
+
+	std::cout << "Visiting..(" << start_x << "," << start_y << ")" << std::endl;
+
+ 	Cell& current = cells[start_x][start_y];
+	current.visited = true;
+
+	if (start_x == start_y && end_x == end_y) {
+		return true;
+	}
+
+	std::vector<Cell*> neighbours;
+
+	// check northern neighbour
+	if (!current.walls[0])
+		neighbours.push_back(&cells[current.x][current.y - 1]);
+
+	// check eastern neighbour
+	if (!current.walls[1])
+		neighbours.push_back(&cells[current.x + 1][current.y]);
+
+	// check southern neighbour
+	if (!current.walls[2])
+		neighbours.push_back(&cells[current.x][current.y + 1]);
+
+	// check western neighbour
+	if (!current.walls[3])
+		neighbours.push_back(&cells[current.x - 1][current.y]);
+
+
+	for (auto cell : neighbours) {
+
+		if (!cell->visited) {
+			if (path_find(cell->x, cell->y, end_x, end_y))
+				return true;
+		}
+	
+	}
+
+	current.visited = false;
+	return false;
+}
+
+
 

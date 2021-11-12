@@ -17,6 +17,10 @@ public:
 
 	void print_maze();
 
+	void reset_visited();
+
+	bool path_find(int start_x, int start_y, int end_x, int end_y);
+
 private:
 	void initialise();
 
