@@ -4,6 +4,7 @@
 #include <vector>
 #include <string>
 #include "maze.h"
+#include "time.h"
 
 
 Maze::Maze(int rows, int cols) {
@@ -30,6 +31,8 @@ void Maze::draw_maze() {
 	my_stack.push(&cells[0][0]);
 	int visited = 1;
 
+	srand(time(NULL));
+
 
 	while (visited < width * height) {
 
@@ -38,7 +41,7 @@ void Maze::draw_maze() {
 		auto current = my_stack.top();
 		current->visited = true;
 
-		std::cout << "visting (" << current->x << "," << current->y << ")" << std::endl;
+		//std::cout << "visting (" << current->x << "," << current->y << ")" << std::endl;
 
 		// check northern neighbour
 		if (current->y > 0 && cells[current->x][current->y - 1].visited == false) {
@@ -131,11 +134,26 @@ void Maze::print_maze() {
 
 		for (int x = 0; x < width; x++) {
 
-			if (cells[x][y].walls[3])
-				std::cout << "|   ";
 
-			else
-				std::cout << "    ";
+
+			if (cells[x][y].walls[3])
+				std::cout << "|";
+
+			else {
+
+				std::cout << " ";
+			}
+
+			if (cells[x][y].inpath) {
+
+				std::cout << " . ";
+			}
+			else {
+				std::cout << "   ";
+
+			}
+
+
 		}
 
 		std::cout << "|";
@@ -163,14 +181,13 @@ void Maze::reset_visited() {
 	}
 
 }
-bool Maze::path_find(int start_x, int start_y, int end_x, int end_y) {
-
-	std::cout << "Visiting..(" << start_x << "," << start_y << ")" << std::endl;
+bool Maze::path_find(int start_x, int start_y, const int end_x, const int end_y) {
 
  	Cell& current = cells[start_x][start_y];
 	current.visited = true;
+	cells[0][0].inpath = true;
 
-	if (start_x == start_y && end_x == end_y) {
+	if (start_x == end_x && start_y == end_y) {
 		return true;
 	}
 
@@ -192,14 +209,15 @@ bool Maze::path_find(int start_x, int start_y, int end_x, int end_y) {
 	if (!current.walls[3])
 		neighbours.push_back(&cells[current.x - 1][current.y]);
 
-
 	for (auto cell : neighbours) {
-
 		if (!cell->visited) {
-			if (path_find(cell->x, cell->y, end_x, end_y))
+			if (path_find(cell->x, cell->y, end_x, end_y)) {
+				cell->inpath = true;
+				std::cout << "Visiting..(" << cell->x << "," << cell->y  << ")" << std::endl;
 				return true;
+			}
+			
 		}
-	
 	}
 
 	current.visited = false;

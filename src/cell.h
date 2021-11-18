@@ -7,6 +7,7 @@ public:
 	int x;
 	int y;
 	bool visited = false;
+	bool inpath = false;
 
 	Cell(int x_coord, int y_coord)
 	{
